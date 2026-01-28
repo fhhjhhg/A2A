@@ -10,11 +10,24 @@ VENV_DIR=".doc-venv"
 
 echo "--- Setting up documentation build environment ---"
 
-# Create a clean virtual environment
-if [ -d "$VENV_DIR" ]; then
-  rm -rf "$VENV_DIR"
+# Check for clean flag
+CLEAN=false
+if [ "${1:-}" == "--clean" ]; then
+  CLEAN=true
 fi
-python3 -m venv "$VENV_DIR"
+
+# Create a clean virtual environment if requested or missing
+if [ "$CLEAN" = true ] || [ ! -d "$VENV_DIR" ]; then
+  if [ -d "$VENV_DIR" ]; then
+    echo "Removing existing virtual environment..."
+    rm -rf "$VENV_DIR"
+  fi
+  echo "Creating new virtual environment..."
+  python3 -m venv "$VENV_DIR"
+else
+  echo "Reusing existing virtual environment..."
+fi
+
 source "$VENV_DIR/bin/activate"
 
 echo "--- Installing package and dependencies ---"
