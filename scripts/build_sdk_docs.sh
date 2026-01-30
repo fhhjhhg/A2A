@@ -7,24 +7,47 @@ PYPI_PACKAGE_NAME="a2a-sdk" # The name on PyPI
 DOCS_SOURCE_DIR="docs/sdk/python"
 DOCS_BUILD_DIR="${DOCS_SOURCE_DIR}/_build"
 VENV_DIR=".doc-venv"
+FORCE_CLEAN=false
+
+# Parse arguments
+for arg in "$@"; do
+  case $arg in
+    --clean)
+      FORCE_CLEAN=true
+      shift
+      ;;
+  esac
+done
 
 echo "--- Setting up documentation build environment ---"
 
-# Create a clean virtual environment
-if [ -d "$VENV_DIR" ]; then
+# Create a clean virtual environment if requested
+if [ "$FORCE_CLEAN" = true ] && [ -d "$VENV_DIR" ]; then
+  echo "Cleaning existing virtual environment..."
   rm -rf "$VENV_DIR"
 fi
-python3 -m venv "$VENV_DIR"
-source "$VENV_DIR/bin/activate"
 
-echo "--- Installing package and dependencies ---"
+if [ ! -d "$VENV_DIR" ]; then
+  echo "Creating virtual environment..."
+  python3 -m venv "$VENV_DIR"
+  source "$VENV_DIR/bin/activate"
 
-# Upgrade pip and install documentation requirements
-pip install -U pip
-pip install -r "requirements-docs.txt"
+  echo "--- Installing package and dependencies ---"
+  # Upgrade pip and install documentation requirements
+  pip install -U pip
+  pip install -r "requirements-docs.txt"
 
-# Install the package itself
-pip install "${PYPI_PACKAGE_NAME}"
+  # Install the package itself
+  pip install "${PYPI_PACKAGE_NAME}"
+else
+  echo "Using existing virtual environment."
+  source "$VENV_DIR/bin/activate"
+
+  echo "--- Checking dependencies ---"
+  # Ensure dependencies are up to date
+  pip install -r "requirements-docs.txt"
+  pip install "${PYPI_PACKAGE_NAME}"
+fi
 
 echo "--- Finding installed package path ---"
 

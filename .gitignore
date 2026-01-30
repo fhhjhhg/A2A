@@ -109,6 +109,7 @@ celerybeat.pid
 
 # Environments
 .env
+.doc-venv/
 .venv
 .venv*
 env/
@@ -185,3 +186,5 @@ Thumbs.db
 docs/sdk/python/_build/
 docs/sdk/python/api/
 docs/sdk/python/generated/
+docs/sdk/python/a2a*.rst
+docs/sdk/python/modules.rst
