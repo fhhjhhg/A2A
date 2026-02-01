@@ -8,13 +8,28 @@ DOCS_SOURCE_DIR="docs/sdk/python"
 DOCS_BUILD_DIR="${DOCS_SOURCE_DIR}/_build"
 VENV_DIR=".doc-venv"
 
+CLEAN_BUILD=false
+
+# Parse arguments
+for arg in "$@"; do
+  if [ "$arg" == "--clean" ]; then
+    CLEAN_BUILD=true
+    shift
+  fi
+done
+
 echo "--- Setting up documentation build environment ---"
 
 # Create a clean virtual environment
-if [ -d "$VENV_DIR" ]; then
-  rm -rf "$VENV_DIR"
+if [ "$CLEAN_BUILD" = true ] || [ ! -d "$VENV_DIR" ]; then
+  echo "Creating new virtual environment..."
+  if [ -d "$VENV_DIR" ]; then
+    rm -rf "$VENV_DIR"
+  fi
+  python3 -m venv "$VENV_DIR"
+else
+  echo "Using existing virtual environment..."
 fi
-python3 -m venv "$VENV_DIR"
 source "$VENV_DIR/bin/activate"
 
 echo "--- Installing package and dependencies ---"
