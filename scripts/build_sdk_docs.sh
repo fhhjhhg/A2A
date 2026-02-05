@@ -7,14 +7,35 @@ PYPI_PACKAGE_NAME="a2a-sdk" # The name on PyPI
 DOCS_SOURCE_DIR="docs/sdk/python"
 DOCS_BUILD_DIR="${DOCS_SOURCE_DIR}/_build"
 VENV_DIR=".doc-venv"
+CLEAN_INSTALL=false
+
+# Parse arguments
+while [[ $# -gt 0 ]]; do
+  case $1 in
+    --clean)
+      CLEAN_INSTALL=true
+      shift
+      ;;
+    *)
+      shift
+      ;;
+  esac
+done
 
 echo "--- Setting up documentation build environment ---"
 
-# Create a clean virtual environment
-if [ -d "$VENV_DIR" ]; then
-  rm -rf "$VENV_DIR"
+# Create a clean virtual environment or reuse existing one
+if [ "$CLEAN_INSTALL" = true ] || [ ! -d "$VENV_DIR" ]; then
+  if [ -d "$VENV_DIR" ]; then
+    echo "--- Removing existing virtual environment ---"
+    rm -rf "$VENV_DIR"
+  fi
+  echo "--- Creating new virtual environment ---"
+  python3 -m venv "$VENV_DIR"
+else
+  echo "--- Reusing existing virtual environment ---"
 fi
-python3 -m venv "$VENV_DIR"
+
 source "$VENV_DIR/bin/activate"
 
 echo "--- Installing package and dependencies ---"
