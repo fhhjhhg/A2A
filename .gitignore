@@ -185,3 +185,6 @@ Thumbs.db
 docs/sdk/python/_build/
 docs/sdk/python/api/
 docs/sdk/python/generated/
+.doc-venv/
+docs/sdk/python/modules.rst
+docs/sdk/python/a2a*.rst
