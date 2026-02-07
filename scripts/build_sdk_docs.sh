@@ -10,11 +10,27 @@ VENV_DIR=".doc-venv"
 
 echo "--- Setting up documentation build environment ---"
 
-# Create a clean virtual environment
-if [ -d "$VENV_DIR" ]; then
+# Check if we should clean the environment
+CLEAN_BUILD=false
+for arg in "$@"; do
+  if [ "$arg" == "--clean" ]; then
+    CLEAN_BUILD=true
+    break
+  fi
+done
+
+if [ "$CLEAN_BUILD" = true ] && [ -d "$VENV_DIR" ]; then
+  echo "--- Cleaning existing virtual environment ---"
   rm -rf "$VENV_DIR"
 fi
-python3 -m venv "$VENV_DIR"
+
+if [ ! -d "$VENV_DIR" ]; then
+  echo "--- Creating virtual environment ---"
+  python3 -m venv "$VENV_DIR"
+else
+  echo "--- Reusing existing virtual environment ---"
+fi
+
 source "$VENV_DIR/bin/activate"
 
 echo "--- Installing package and dependencies ---"
