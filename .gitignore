@@ -185,3 +185,10 @@ Thumbs.db
 docs/sdk/python/_build/
 docs/sdk/python/api/
 docs/sdk/python/generated/
+
+# Documentation virtual environment
+.doc-venv/
+
+# Sphinx generated source files
+docs/sdk/python/a2a*.rst
+docs/sdk/python/modules.rst
