@@ -8,23 +8,36 @@ DOCS_SOURCE_DIR="docs/sdk/python"
 DOCS_BUILD_DIR="${DOCS_SOURCE_DIR}/_build"
 VENV_DIR=".doc-venv"
 
+CLEAN=false
+for arg in "$@"; do
+  if [ "$arg" == "--clean" ]; then
+    CLEAN=true
+  fi
+done
+
 echo "--- Setting up documentation build environment ---"
 
-# Create a clean virtual environment
-if [ -d "$VENV_DIR" ]; then
+if [ "$CLEAN" = true ] && [ -d "$VENV_DIR" ]; then
+  echo "Cleaning existing virtual environment..."
   rm -rf "$VENV_DIR"
 fi
-python3 -m venv "$VENV_DIR"
-source "$VENV_DIR/bin/activate"
 
-echo "--- Installing package and dependencies ---"
+if [ ! -d "$VENV_DIR" ]; then
+  echo "Creating new virtual environment..."
+  python3 -m venv "$VENV_DIR"
+  source "$VENV_DIR/bin/activate"
+  echo "--- Upgrading pip ---"
+  pip install -U pip
+else
+  echo "Reusing existing virtual environment..."
+  source "$VENV_DIR/bin/activate"
+fi
 
-# Upgrade pip and install documentation requirements
-pip install -U pip
-pip install -r "requirements-docs.txt"
+echo "--- Installing/Updating package and dependencies ---"
 
-# Install the package itself
-pip install "${PYPI_PACKAGE_NAME}"
+# Install documentation requirements and the package itself
+# pip is smart enough to skip if already satisfied
+pip install -r "requirements-docs.txt" "${PYPI_PACKAGE_NAME}"
 
 echo "--- Finding installed package path ---"
 
