@@ -1,6 +1,16 @@
 #!/bin/bash
 set -e # Exit immediately if a command exits with a non-zero status.
 
+# Parse arguments
+CLEAN=false
+while [[ "$#" -gt 0 ]]; do
+    case $1 in
+        --clean) CLEAN=true ;;
+        *) echo "Unknown parameter passed: $1"; exit 1 ;;
+    esac
+    shift
+done
+
 # --- Configuration ---
 PACKAGE_NAME="a2a"          # The name of the package to import
 PYPI_PACKAGE_NAME="a2a-sdk" # The name on PyPI
@@ -10,14 +20,21 @@ VENV_DIR=".doc-venv"
 
 echo "--- Setting up documentation build environment ---"
 
-# Create a clean virtual environment
-if [ -d "$VENV_DIR" ]; then
+# Create a clean virtual environment if requested
+if [ "$CLEAN" = true ] && [ -d "$VENV_DIR" ]; then
+  echo "--- Cleaning existing virtual environment ---"
   rm -rf "$VENV_DIR"
 fi
-python3 -m venv "$VENV_DIR"
+
+if [ ! -d "$VENV_DIR" ]; then
+  echo "--- Creating new virtual environment ---"
+  python3 -m venv "$VENV_DIR"
+else
+  echo "--- Reusing existing virtual environment ---"
+fi
 source "$VENV_DIR/bin/activate"
 
-echo "--- Installing package and dependencies ---"
+echo "--- Installing/Updating package and dependencies ---"
 
 # Upgrade pip and install documentation requirements
 pip install -U pip
