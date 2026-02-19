@@ -116,6 +116,7 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+.doc-venv/
 
 # Spyder project settings
 .spyderproject
@@ -185,3 +186,5 @@ Thumbs.db
 docs/sdk/python/_build/
 docs/sdk/python/api/
 docs/sdk/python/generated/
+docs/sdk/python/a2a*.rst
+docs/sdk/python/modules.rst
