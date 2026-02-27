@@ -111,6 +111,8 @@ celerybeat.pid
 .env
 .venv
 .venv*
+.doc-venv/
+.doc-venv*
 env/
 venv/
 ENV/
@@ -185,3 +187,16 @@ Thumbs.db
 docs/sdk/python/_build/
 docs/sdk/python/api/
 docs/sdk/python/generated/
+docs/sdk/python/a2a.rst
+docs/sdk/python/a2a.*.rst
+docs/sdk/python/modules.rst
+docs/sdk/python/a2a.client.rst
+docs/sdk/python/a2a.server.rst
+docs/sdk/python/a2a.utils.rst
+docs/sdk/python/a2a.grpc.rst
+docs/sdk/python/a2a.exceptions.rst
+docs/sdk/python/a2a.types.rst
+docs/sdk/python/a2a.server.apps.rst
+docs/sdk/python/a2a.server.request_handlers.rst
+docs/sdk/python/a2a.server.tasks.rst
+docs/sdk/python/a2a.server.apps.rest.rst
