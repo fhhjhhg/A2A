@@ -1,0 +1,3 @@
+## 2024-05-19 - Optimizing SDK Docs Build Time
+**Learning:** The `scripts/build_sdk_docs.sh` script optimizes build time by reusing the existing `.doc-venv` virtual environment (reducing time from ~80s to ~10s) and accepts a `--clean` flag to force recreation. However, the current script always deletes and recreates the virtual environment. We can optimize this by checking for a `--clean` flag and reusing the existing environment if the flag is not provided, while still using `pip install --upgrade` to ensure dependencies are up to date.
+**Action:** Optimize `scripts/build_sdk_docs.sh` to reuse the existing virtual environment by default, adding a `--clean` flag for forced recreation, and use `pip install --upgrade` for the target package.
