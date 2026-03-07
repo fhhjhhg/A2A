@@ -1,0 +1,3 @@
+## 2024-03-07 - Python Native HTTP vs Bash !wget in Jupyter Notebooks
+**Learning:** Shell-based `!wget` commands within Jupyter notebook loops introduce substantial process overhead due to repeatedly spawning subshells. However, for very large files, `!wget` is desirable due to progress bars and resume features.
+**Action:** When replacing `!wget` with native Python equivalents like `urllib.request.urlretrieve` to reduce subshell overhead, restrict this optimization to small files within loops. Leave `!wget` in place for large artifact downloads where the overhead is negligible compared to the download time, and the UX features (progress bars) are valuable. Also be careful to avoid introducing large formatting diffs by preserving the notebook structure.
