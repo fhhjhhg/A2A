@@ -1,0 +1,3 @@
+## 2024-05-24 - Avoid Tensor Conversions for NumPy Inputs
+**Learning:** For functions that accept both NumPy arrays and PyTorch tensors, using native NumPy operations for NumPy inputs avoids expensive round-trip tensor conversions (~10x overhead for `torch.quantile` vs `np.quantile`).
+**Action:** Prioritize using native `np` operations (`np.quantile`, `np.clip`) when the input is a NumPy array to avoid unnecessary and expensive round-trip conversions to PyTorch tensors.
