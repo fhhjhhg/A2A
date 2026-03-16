@@ -185,3 +185,9 @@ Thumbs.db
 docs/sdk/python/_build/
 docs/sdk/python/api/
 docs/sdk/python/generated/
+
+
+# A2A Custom ignores
+.doc-venv/
+docs/sdk/python/a2a*.rst
+docs/sdk/python/modules.rst

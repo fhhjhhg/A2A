@@ -10,21 +10,36 @@ VENV_DIR=".doc-venv"
 
 echo "--- Setting up documentation build environment ---"
 
-# Create a clean virtual environment
-if [ -d "$VENV_DIR" ]; then
+CLEAN=false
+if [ "$1" == "--clean" ]; then
+  CLEAN=true
+fi
+
+if [ "$CLEAN" = true ] && [ -d "$VENV_DIR" ]; then
+  echo "Cleaning existing virtual environment..."
   rm -rf "$VENV_DIR"
 fi
-python3 -m venv "$VENV_DIR"
-source "$VENV_DIR/bin/activate"
 
-echo "--- Installing package and dependencies ---"
+# Create a clean virtual environment or reuse existing
+if [ ! -d "$VENV_DIR" ]; then
+  echo "Creating new virtual environment..."
+  python3 -m venv "$VENV_DIR"
+  source "$VENV_DIR/bin/activate"
 
-# Upgrade pip and install documentation requirements
-pip install -U pip
-pip install -r "requirements-docs.txt"
+  echo "--- Installing package and dependencies ---"
 
-# Install the package itself
-pip install "${PYPI_PACKAGE_NAME}"
+  # Upgrade pip and install documentation requirements
+  pip install -U pip
+  pip install -r "requirements-docs.txt"
+else
+  echo "Reusing existing virtual environment..."
+  source "$VENV_DIR/bin/activate"
+
+  echo "--- Upgrading package ---"
+fi
+
+# Install the package itself (always upgrade to ensure latest version)
+pip install --upgrade "${PYPI_PACKAGE_NAME}"
 
 echo "--- Finding installed package path ---"
 
