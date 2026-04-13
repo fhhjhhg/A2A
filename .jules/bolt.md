@@ -1,0 +1,3 @@
+## 2024-04-13 - SDK Documentation Build Optimization
+**Learning:** Recreating a Python virtual environment and downloading dependencies for documentation builds (Sphinx) every time is extremely slow (~80s). By retaining `.doc-venv` between script runs and ensuring the package is updated via `pip install --upgrade`, we drastically cut build times down to ~10s.
+**Action:** Always look for opportunities to cache temporary virtual environments or `node_modules` during repetitive build scripts if they can be robustly updated on successive runs. Provide a `--clean` flag or similar escape hatch to rebuild them from scratch when necessary.
