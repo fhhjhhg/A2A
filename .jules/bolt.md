@@ -1,0 +1,3 @@
+## 2024-06-25 - [Jupyter Notebook Streaming Display Optimization]
+**Learning:** Continuous `clear_output(wait=True)` and `display()` calls for text streaming in interactive Jupyter Notebooks cause significant frontend rendering overhead. The time complexity of `"".join(list)` is also slower than `+=` in Python when called in every iteration of a loop.
+**Action:** Accumulate text chunks in a list and implement a time-based throttling mechanism (e.g., updating every 0.1 seconds) to join the list and update the display, then flush after the loop. Use `# noqa: PLR2004` to bypass ruff magic number linting for the time threshold.
