@@ -1,0 +1,3 @@
+## 2024-05-25 - Throttling Jupyter Notebook Streaming Updates
+**Learning:** Continuous `clear_output(wait=True)` and `display()` calls for text streaming in Jupyter Notebooks cause significant frontend rendering overhead, creating a UI bottleneck. Accumulating strings with `+=` is fast in CPython, but if `"".join(list)` is called on every iteration, it is O(N^2).
+**Action:** Use a list to accumulate text chunks and implement a time-based throttling mechanism (e.g., updating every 0.1 seconds using `time.time()`) to join the list and update the display, followed by a concluding flush operation to ensure all content is shown.
