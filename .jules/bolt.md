@@ -1,0 +1,3 @@
+## 2024-05-24 - Jupyter Notebook Streaming Overhead
+**Learning:** Continuous `clear_output(wait=True)` and `display()` calls for text streaming in interactive Jupyter Notebooks cause significant frontend rendering overhead. Additionally, using `+=` string concatenation in a loop is $O(N^2)$ and slower than accumulating in a list and joining.
+**Action:** Use a list to accumulate text chunks and implement a time-based throttling mechanism (e.g., updating every 0.1 seconds using `time.time()`) to join the list and update the display, followed by a concluding flush operation to ensure all content is shown.
