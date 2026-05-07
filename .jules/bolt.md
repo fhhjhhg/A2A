@@ -1,0 +1,3 @@
+## 2024-05-07 - Frontend Rendering Overhead in Interactive Jupyter Notebooks
+**Learning:** Continuous calls to `clear_output(wait=True)` and `display()` inside tight loops (like text streaming) cause significant frontend rendering overhead. Similarly, repeatedly joining accumulated strings with `+=` or `"".join()` inside the loop introduces O(N^2) complexity that compounds the rendering latency.
+**Action:** Always accumulate text chunks using a list (`chunks.append()`), throttle the display updates using `time.time()` (e.g. updating every 0.1s), and perform a final `clear_output()` and `display()` outside the loop. Use `# noqa: PLR2004` to suppress Ruff magic-value warnings on the hardcoded time interval.
