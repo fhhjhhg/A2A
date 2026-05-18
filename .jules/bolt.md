@@ -1,0 +1,3 @@
+## 2024-05-18 - Throttled Jupyter Notebook Output Streaming
+**Learning:** Continuous calls to `clear_output(wait=True)` and `display()` inside tight loops (like token streaming from LLM generation) in Jupyter Notebooks cause immense rendering overhead on the frontend, often causing UI freezes or severe lag. The browser spends too much time processing WebSockets and DOM reflows.
+**Action:** Implement a time-based throttling mechanism (e.g. 10 FPS / 0.1 seconds using `time.time()`) to batch the accumulated string and update the display periodically, followed by one final unconditional flush after the loop ends.
