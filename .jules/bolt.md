@@ -1,0 +1,3 @@
+## 2024-05-25 - Jupyter Notebook Frontend Rendering Overhead Optimization
+**Learning:** In interactive Jupyter Notebooks, continuous `clear_output(wait=True)` and `display()` calls for text streaming cause significant frontend rendering overhead. Repeated string concatenation (`+=`) in a loop is also $O(N^2)$ and slower than `"".join(list)`.
+**Action:** Accumulate text chunks in a list, implement a time-based throttling mechanism (e.g., updating every 0.1 seconds using `time.time()`) to join the list and update the display, followed by a concluding flush operation to ensure all content is shown. Add `# noqa: PLR2004` to bypass Ruff linting for the magic threshold value. Use `clear_output(wait=True)` immediately before `display()` to prevent duplicating output.
