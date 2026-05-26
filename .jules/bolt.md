@@ -1,0 +1,3 @@
+## 2024-05-26 - Optimize Jupyter Notebook Streaming Execution Speed
+**Learning:** Calling `clear_output()` and `display()` on every token update during text streaming in an interactive Jupyter Notebook is a significant bottleneck causing frontend UI lag and high latency. Furthermore, repeatedly using `+=` on strings (`accumulated_content += new_chunk`) in tight loops takes O(N²) time.
+**Action:** Next time you see `clear_output` followed by `display` in a tight loop generating text, switch to accumulating text in a list using `.append()` (which is O(1)) and throttle the rendering rate using `time.time()` so that `display("".join(list))` executes at most every ~0.1 seconds, with a final flush block at the end of the loop.
