@@ -1,0 +1,3 @@
+## 2024-06-25 - Avoid modifying Jupyter notebooks directly via json.dump if diff size matters
+**Learning:** Programmatically updating Jupyter Notebooks via json.dump (even with `ensure_ascii=False` and `indent=2`) clears formatting that Jupyter normally maintains when users edit it manually, and strips execution counts / outputs creating unmanageably large and noisy diffs that cause PR rejections.
+**Action:** When updating Jupyter Notebooks, prefer extracting code, editing it, and explicitly emptying the output block (`cell["outputs"] = []`) and execution counts (`cell["execution_count"] = None`) *programmatically* prior to json dumping to ensure diffs focus purely on the intended code change, as notebooks track internal metadata heavily.
