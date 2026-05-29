@@ -1,0 +1,3 @@
+## 2024-10-27 - [Optimize Jupyter Notebook Streaming]
+**Learning:** Constantly updating Jupyter notebook output character-by-character during streaming causes heavy DOM rendering overhead. Using `+=` for string accumulation in python loops is also inefficient ($O(N^2)$).
+**Action:** Throttle the update frequency using `time.time()` (e.g., to 0.1s intervals) and accumulate text using a list (`chunks.append()`) followed by `"".join(chunks)` to significantly improve performance. Ensure a final `clear_output` and `display` is called after the loop to render the last chunk. Also ensure indentation is exactly preserved when patching Notebooks programmatically.
