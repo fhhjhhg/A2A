@@ -1,0 +1,3 @@
+## 2024-06-03 - [Optimize get_scaled_image for numpy arrays]
+**Learning:** For functions in this repository that accept both NumPy arrays and PyTorch tensors, prioritize using native NumPy operations for NumPy inputs to avoid expensive round-trip tensor conversions. `get_scaled_image` in `SKM_TEA_Dataset_Tutorial.ipynb` was doing `torch.as_tensor(x)` -> `torch.quantile` -> `torch.clip` -> `x.numpy()` when the input was a `numpy.ndarray`, leading to a significant performance overhead.
+**Action:** Use native numpy operations directly on numpy arrays, rather than converting back and forth to torch tensors.
