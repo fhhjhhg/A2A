@@ -1,0 +1,3 @@
+## 2024-05-18 - Throttling Stream Rendering in Jupyter Notebooks
+**Learning:** Continuous synchronous calls to `clear_output(wait=True)` and `display()` for every chunk in a fast text stream cause severe frontend rendering overhead and block the main thread, leading to UI lag. Also, $O(N^2)$ string concatenation via `+=` in the loop worsens the bottleneck.
+**Action:** Always accumulate text chunks using `.append()` in a list (for $O(1)$ appends) and implement a time-based throttling mechanism (e.g., updating only every 0.1s using `time.time()`) to join the list and update the display. Follow up with a concluding flush operation to ensure the final content renders.
