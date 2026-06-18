@@ -1,0 +1,3 @@
+## 2024-05-24 - Avoid PyTorch tensor conversion for NumPy inputs in hybrid functions
+**Learning:** Functions that accept both NumPy arrays and PyTorch tensors (e.g., `get_scaled_image`) can experience significant overhead (~6-7x slowdown) if they force NumPy arrays to become PyTorch tensors just to reuse the same operations (`quantile`, `clip`). The overhead of tensor conversion and transferring data back and forth dominates the actual execution time.
+**Action:** When optimizing functions that handle multiple array/tensor types, always branch and use native operations (e.g., `np.quantile` for numpy, `torch.quantile` for tensors) instead of performing an expensive round-trip conversion to a common type.
