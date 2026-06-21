@@ -1,0 +1,3 @@
+## 2024-03-01 - Parallelizing IPython Shell Commands
+**Learning:** Parallelizing I/O-bound shell commands (like wget and tar) in Jupyter Notebooks using ThreadPoolExecutor and subprocess.run prevents sequential I/O bottlenecks and significantly reduces download times compared to using IPython ! magics sequentially.
+**Action:** When encountering sequential `!wget` or `!tar` commands in loops within Jupyter Notebooks, replace them with `ThreadPoolExecutor` and `subprocess.run` to execute them in parallel, ensuring that exceptions from background threads are properly consumed (e.g., using `future.result()`).
