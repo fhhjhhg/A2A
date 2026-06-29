@@ -1,0 +1,3 @@
+## 2024-05-18 - [Throttling Output Streams in Jupyter Notebooks]
+**Learning:** Continuous `clear_output(wait=True)` and `display()` calls for text streaming cause significant frontend rendering overhead and UI freezing. Additionally, accumulating strings iteratively with `+=` can degrade to O(N^2) complexity in worst-case scenarios when large texts are generated.
+**Action:** Always accumulate text chunks using a list instead of a string. Throttle UI updates using `time.time()` to limit `display()` calls to roughly 10Hz (e.g. `0.1` seconds interval) to ensure UI responsiveness while streaming in Jupyter.
