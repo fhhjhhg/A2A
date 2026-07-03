@@ -1,0 +1,3 @@
+## 2024-05-18 - [Parallelizing wget downloads in Jupyter Notebooks]
+**Learning:** Sequential `!wget` downloads in Jupyter notebooks are a significant I/O bottleneck, especially for multi-file datasets or weights. Replacing shell `!` commands with native Python `ThreadPoolExecutor` mapping to `subprocess.run(["wget", ...])` heavily speeds up downloads, but we must explicitly consume futures (e.g. `list(executor.map(...))` or `[future.result() for future in ...]`) to raise exceptions in background threads.
+**Action:** When finding slow sequential downloads in Jupyter notebooks, use Python `concurrent.futures.ThreadPoolExecutor` along with `subprocess` instead of shell loops or separate `!wget` calls, and clear cell outputs and execution counts afterwards.
