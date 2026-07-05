@@ -1,0 +1,3 @@
+## 2024-07-05 - Optimize downloading and extracting in SKM_TEA_Dataset_Tutorial.ipynb
+**Learning:** In Jupyter Notebooks, `!wget` executed inside a for-loop runs sequentially, causing a bottleneck when fetching multiple large dataset files or multiple small metadata files. We can speed this up by parallelizing the network I/O-bound processes using `concurrent.futures.ThreadPoolExecutor` and `subprocess`.
+**Action:** When updating Jupyter Notebooks with multi-file downloads using shell commands in loops, implement `ThreadPoolExecutor` and `subprocess` to parallelize them, ensuring `tqdm` is used correctly with `concurrent.futures.as_completed(futures)` to track progress smoothly and consume exceptions.
