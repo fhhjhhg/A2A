@@ -1,0 +1,3 @@
+## 2024-07-09 - [Optimize percentile scaling on numpy arrays]
+**Learning:** Calculating percentiles on large numpy arrays by first converting them to `torch.Tensor` and using `torch.quantile()` can result in significant overhead (~9x slower for large arrays) and can crash for arrays larger than 16M elements due to `float32` size constraints in PyTorch.
+**Action:** When a function accepts both NumPy arrays and PyTorch tensors, avoid eagerly converting NumPy arrays to PyTorch tensors for operations like percentile/quantile calculation. Use `np.percentile()` natively before any conversion, which avoids memory overhead and handles >16M element arrays.
