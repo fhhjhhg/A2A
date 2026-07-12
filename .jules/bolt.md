@@ -1,0 +1,3 @@
+## 2024-07-12 - Parallelize `wget` downloads in Jupyter Notebooks
+**Learning:** Sequential `!wget` downloads in Jupyter notebooks, especially for large datasets or multiple files, are I/O bound and can be significantly optimized using Python's `concurrent.futures.ThreadPoolExecutor` combined with `subprocess.Popen` or `subprocess.run`.
+**Action:** Replace `!wget` loops with `ThreadPoolExecutor` and ensure exceptions from background threads are properly handled and consumed (e.g. by wrapping `executor.map` in a list, or explicitly calling `.result()` on futures). Keep `ensure_ascii=False` when using `json.dump` to save `.ipynb` files.
