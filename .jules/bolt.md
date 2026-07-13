@@ -1,0 +1,3 @@
+## 2024-07-26 - [Performance Optimization in SKM_TEA_Dataset_Tutorial.ipynb]
+**Learning:** Converting numpy arrays to torch tensors solely to use `torch.quantile`, and then converting back, introduces a large overhead. Furthermore, `torch.quantile` can throw errors on `float32` tensors > 16M elements.
+**Action:** Use native NumPy operations (`np.percentile`, `np.clip`) when input is a NumPy array to avoid expensive round-trip tensor conversions and to handle large volumes which can crash `torch.quantile`. Ensure `percentile` arguments are correctly adjusted (e.g. multiplied by 100 for `np.percentile`).
