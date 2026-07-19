@@ -1,0 +1,3 @@
+## 2024-05-18 - Optimize text streaming rendering in instructor_large.ipynb
+**Learning:** In interactive Jupyter Notebooks, continuous clear_output(wait=True) and display() calls for text streaming cause significant frontend rendering overhead, and building strings progressively with "".join(list) in every iteration or += is less efficient. The most efficient pattern is accumulating in a list and applying time-based throttling for display updates.
+**Action:** Replace string concatenation with list accumulation and implement a time-based throttling mechanism (e.g., updating every 0.1 seconds) to join the list and update the display, followed by a concluding flush operation.
