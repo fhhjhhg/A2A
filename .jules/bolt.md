@@ -1,0 +1,3 @@
+## 2024-07-27 - [Optimize notebook rendering performance]
+**Learning:** Frequent, unthrottled calls to `clear_output(wait=True)` and `display()` cause excessive rendering overhead and UI stuttering in the Jupyter frontend when streaming large volumes of text. Also, string concatenation using `+=` inside large loops in CPython can be sub-optimal.
+**Action:** When implementing streaming in a Jupyter notebook, use a list to accumulate chunks, and implement a time-based throttling mechanism (e.g., updating every 0.1 seconds) to batch the display updates, followed by a final display step outside the loop.
