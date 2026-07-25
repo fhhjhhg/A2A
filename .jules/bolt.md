@@ -1,0 +1,3 @@
+## 2023-10-24 - [Optimizing I/O and Rendering in Jupyter Notebooks]
+**Learning:** Sequential `!wget` and `!tar` loops in Jupyter Notebooks cause heavy I/O bottlenecks. Text streaming with unthrottled `clear_output`/`display` creates severe frontend rendering lag. Large PyDrive `.GetList()` queries trigger eager fetching, leading to memory bloat and slow time-to-first-item.
+**Action:** Use `ThreadPoolExecutor` with `subprocess` to parallelize I/O bound downloads and explicitly call `.result()` to catch exceptions. Throttle text streaming UI updates by accumulating strings and using `time.time()` checks (e.g., every 0.1s). Use explicit pagination with `'maxResults'` for PyDrive queries to process batches lazily.
