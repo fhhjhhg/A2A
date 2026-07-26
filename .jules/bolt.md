@@ -1,0 +1,3 @@
+## 2024-05-20 - [Performance Optimization: Numpy Arrays over PyTorch Tensors]
+**Learning:** Using PyTorch tensors for calculations on native numpy arrays can cause significant overhead due to type conversion and object serialization, and `torch.quantile` can fail on large numpy arrays due to max float32 dimension limits. Prioritizing native NumPy operations like `np.percentile` on NumPy arrays avoids this overhead and memory limits.
+**Action:** Use native numpy equivalent operations (`np.percentile`, `np.clip`) when dealing with numpy arrays, instead of converting them to PyTorch tensors and back.
