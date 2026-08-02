@@ -1,0 +1,3 @@
+## 2024-05-14 - Parallel I/O in Jupyter Notebooks
+**Learning:** Sequential `!wget` or blocking I/O calls in Jupyter notebooks can bottleneck large data acquisition steps. Parallelizing these downloads with `concurrent.futures.ThreadPoolExecutor` and `subprocess` significantly speeds up notebook initialization, but `wget` and `tar` pipe operations must have careful error checking (using `wait()` and evaluating both return codes).
+**Action:** Use `ThreadPoolExecutor` alongside `subprocess.Popen` or `subprocess.run` to handle multiple I/O downloads in notebooks when fetching datasets, ensuring to use `as_completed` loops calling `.result()` to raise exceptions.
