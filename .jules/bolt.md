@@ -1,0 +1,3 @@
+## 2024-05-18 - [Native NumPy Operations for Quantiles]
+**Learning:** Converting large numpy arrays (like MRI volumes > 16M elements) to PyTorch tensors just to compute `torch.quantile` is not only an expensive round-trip that wastes memory and CPU, but it can also cause a `RuntimeError` due to size limitations for `float32` tensors in PyTorch.
+**Action:** When a function accepts both numpy arrays and torch tensors, keep numpy inputs as numpy arrays and use native operations (e.g. `np.percentile(x, percentile * 100)` instead of `torch.quantile(x, percentile)`) to maintain performance and avoid crashes on large inputs.
