@@ -1,0 +1,3 @@
+## 2025-11-02 - Optimize Jupyter Notebook Text Streaming Performance
+**Learning:** In interactive Jupyter Notebooks, continuous `clear_output(wait=True)` and `display()` calls for text streaming cause significant frontend rendering overhead, resulting in O(N^2) time complexity for string concatenation when processing numerous small chunks in loops.
+**Action:** Replace string concatenation (`+=`) with list accumulation (`.append()`) and implement a time-based throttling mechanism (e.g., updating every 0.1 seconds using `time.time()`) to join the list and update the display. Ensure to conclude with a final flush operation.
