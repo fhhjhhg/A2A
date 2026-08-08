@@ -1,0 +1,3 @@
+## 2025-02-14 - Parallelizing I/O Bound Shell Commands in Jupyter Notebooks
+**Learning:** Sequential use of the `!` magic command for I/O operations (like `wget` and `tar`) in Jupyter Notebooks can cause significant performance bottlenecks as each operation blocks until completion. Furthermore, `!` magic is not thread-safe and shouldn't be used inside a thread pool.
+**Action:** Use Python's `subprocess` module along with `concurrent.futures.ThreadPoolExecutor` to parallelize I/O bound operations. Iterate over `concurrent.futures.as_completed(futures)` to ensure exceptions from background threads are properly caught and to allow for accurate progress tracking with `tqdm`.
