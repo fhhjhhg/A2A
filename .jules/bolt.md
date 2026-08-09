@@ -1,0 +1,3 @@
+## 2024-08-09 - [torch.quantile vs np.percentile for NumPy arrays]
+**Learning:** For functions accepting both NumPy arrays and PyTorch tensors, using `torch.quantile` requires converting NumPy arrays to PyTorch tensors first. For large data (like MRI volumes), this round-trip conversion is expensive. Additionally, `torch.quantile` can throw size limitations on large structures.
+**Action:** Prioritize using native NumPy operations like `np.percentile` for NumPy inputs to avoid expensive round-trip tensor conversions and handle large data structures efficiently. Note that `np.percentile` expects a range of [0, 100] while `torch.quantile` uses [0.0, 1.0].
