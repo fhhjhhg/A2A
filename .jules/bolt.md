@@ -1,0 +1,3 @@
+## 2024-05-24 - PyTorch Chunking and tqdm Overhead
+**Learning:** PyTorch chunking loops suffer from measurable overhead when element-wise operations (like `unsqueeze`) are performed per chunk instead of once on the entire tensor beforehand. Additionally, `tqdm(..., disable=True)` in performance-critical loops still introduces measurable overhead compared to conditionally wrapping the iterable.
+**Action:** Always hoist element-wise operations outside of PyTorch chunking loops to operate on the entire tensor before `torch.split`. Conditionally wrap iterables (e.g., `if pbar: chunks = tqdm(chunks)`) instead of relying on `disable=True`.
