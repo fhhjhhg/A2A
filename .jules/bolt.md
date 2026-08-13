@@ -1,0 +1,3 @@
+## 2024-05-24 - [Avoid unnecessary torch conversion for native numpy operations]
+**Learning:** `torch.quantile` cannot be easily used on large `float32` tensors on CPU or GPU without causing `RuntimeError` due to limits on size. Using `np.percentile` is often safer for large elements. Moreover, converting `np.ndarray` to `torch.Tensor` and converting back to `numpy` purely to compute a quantile involves expensive memory copying or formatting changes.
+**Action:** When calculating quantiles or scaling data in utility functions that support both tensors and NumPy arrays, natively use `np.percentile` for NumPy inputs and avoid costly tensor round-trip conversions. `np.percentile` uses `[0, 100]` scale, whereas `torch.quantile` uses `[0, 1.0]`.
