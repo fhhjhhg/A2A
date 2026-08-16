@@ -1,0 +1,3 @@
+## 2024-05-24 - Parallelize Jupyter Downloads
+**Learning:** IPython `!` magics inside notebooks are not thread-safe and execute sequentially in loops. When performance measurement is impractical in a sandbox (e.g., massive downloads), parallelizing blocking I/O using `ThreadPoolExecutor` and `subprocess` guarantees a net performance improvement. Crucially, when using executor mappings or asynchronous completion in Python, we must ensure exceptions from background threads are properly raised.
+**Action:** Use `concurrent.futures.ThreadPoolExecutor` and `subprocess` to parallelize I/O bound tasks like `wget` and `tar` instead of loops of IPython magics.
