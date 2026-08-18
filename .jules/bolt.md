@@ -1,0 +1,3 @@
+## 2024-05-15 - [Avoid Tensor round-trips for NumPy quantile calculations]
+**Learning:** The `get_scaled_image` function in `SKM_TEA_Dataset_Tutorial.ipynb` was converting NumPy arrays to PyTorch tensors to calculate `torch.quantile`, then back to NumPy. This round-trip conversion overhead on large volumes is much slower than using native `np.percentile` directly on the NumPy input. Furthermore, `torch.quantile` can throw size limitation errors for huge `float32` tensors on CPU, while `np.percentile` handles them better.
+**Action:** Always prefer native NumPy operations (like `np.percentile` instead of `torch.quantile`) for NumPy inputs to avoid expensive cross-library memory transfers and overhead.
