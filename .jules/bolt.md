@@ -1,0 +1,5 @@
+## 2024-08-19 - Fast quantile scaling for mixed NumPy/PyTorch functions
+
+**Learning:** When working with machine learning workflows where functions handle both PyTorch tensors and NumPy arrays natively, falling back to a PyTorch implementation for both (e.g. converting NumPy arrays via `torch.as_tensor()` and using `torch.quantile`) introduces a severe performance penalty. In a benchmarking test, avoiding the tensor conversion and using native `np.percentile` for NumPy inputs reduced scaling time from 48.9s to 6.4s for an array sequence. Furthermore, when dealing with arrays larger than ~16M elements, `torch.quantile` can run into `RuntimeError` on float32 arrays, making `np.percentile` essential for safety.
+
+**Action:** Whenever writing utility functions that accept both `np.ndarray` and `torch.Tensor` (common in MedDL and standard ML data processing pipelines), implement separate native paths using NumPy operations for NumPy arrays and PyTorch operations for PyTorch tensors, instead of indiscriminately converting NumPy arrays to tensors for homogeneous logic.
