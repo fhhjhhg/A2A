@@ -1,0 +1,3 @@
+## 2024-05-24 - [Hoisting operations outside loops and avoiding tqdm overhead]
+**Learning:** In PyTorch, applying element-wise operations like `unsqueeze` inside a loop over chunks creates unnecessary overhead by allocating new tensor views or graph nodes repeatedly. Additionally, `tqdm(..., disable=True)` still introduces measurable overhead.
+**Action:** Hoist element-wise operations outside the loop to operate on the entire tensor once before `torch.split`. Also, conditionally wrap the iterable (e.g., `if pbar: chunks = tqdm(chunks)`) instead of using the `disable` flag to completely avoid overhead when the progress bar is disabled.
