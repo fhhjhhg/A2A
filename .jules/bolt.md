@@ -1,0 +1,3 @@
+## 2024-05-18 - [Optimize `torch.quantile` size limitations]
+**Learning:** `torch.quantile` throws a `RuntimeError` due to size limitations for `float32` tensors on large data structures (e.g., >16M elements). Using `np.percentile` is more robust for large matrices and avoids the conversion overhead for numpy arrays. Note that `np.percentile` expects [0, 100] while `torch.quantile` expects [0.0, 1.0].
+**Action:** When calculating quantiles on large tensors or arrays, use `np.percentile` on NumPy arrays instead to handle these larger data structures efficiently, applying `try-except` fallback on `torch.quantile` if the input is a PyTorch tensor.
