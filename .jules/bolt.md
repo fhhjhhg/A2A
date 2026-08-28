@@ -1,0 +1,3 @@
+## 2025-02-28 - Optimize PyTorch chunking loops with hoisted element-wise operations and correct tqdm usage
+**Learning:** Element-wise operations inside PyTorch chunking loops (like `chunk.unsqueeze(1)`) are highly inefficient because they allocate new tensor views/nodes per chunk. Additionally, using `tqdm(..., disable=True)` still introduces measurable overhead.
+**Action:** Hoist element-wise operations (like `unsqueeze(1)`) outside the loop to operate on the entire tensor before `torch.split`. Also, conditionally wrap the iterable with `tqdm` (e.g., `if pbar: chunks = tqdm(chunks)`) rather than relying on `disable=not pbar`.
