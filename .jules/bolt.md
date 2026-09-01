@@ -1,0 +1,7 @@
+## 2024-09-01 - [Avoid torch.quantile for large arrays / Avoid unnecessary tensor conversion]
+**Learning:** PyTorch's `torch.quantile` has a known size limitation with large `float32` tensors (over 16M elements, like 3D medical image volumes), which throws a `RuntimeError`. Converting NumPy arrays to PyTorch tensors simply to calculate a quantile also introduces a massive overhead (~85% slower in benchmarking).
+**Action:** When working with image scaling or quantiles, natively use `np.percentile` (scaling percentile by 100) for NumPy arrays to avoid the conversion overhead. For PyTorch tensors, wrap `torch.quantile` in a `try...except RuntimeError` block and fallback to `np.percentile(x.cpu().numpy())` for large tensors.
+
+## 2024-09-01 - [Avoid silent type promotion in tensor scaling]
+**Learning:** `np.percentile` returns a `numpy.float64` scalar by default. When modifying PyTorch tensors or NumPy arrays of type `float32` by dividing them with this scalar, the entire array is silently promoted to `float64` (Double). This doubles memory consumption and leads to critical runtime errors (e.g., `expected scalar type Float but found Double`) when passed into downstream PyTorch models expecting `float32`.
+**Action:** Always explicitly cast the result of `np.percentile` back to a standard Python `float` (e.g., `scale_factor = float(np.percentile(x, ...))`) before arithmetic operations to preserve the original `float32` dtype of the tensor/array.
