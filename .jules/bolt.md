@@ -1,0 +1,3 @@
+## 2025-03-09 - [Parallelize I/O-bound Jupyter Shell Commands]
+**Learning:** Sequential execution of `!wget | tar` commands in a loop in a Jupyter Notebook using IPython magic creates a significant I/O bottleneck, as each download and extraction blocks the next.
+**Action:** Replace sequential IPython magic loops for I/O operations with `ThreadPoolExecutor` and `subprocess.Popen`, chaining standard out to standard in where necessary (e.g., `wget` to `tar`), and ensuring `.wait()` and `.communicate()` are used properly to avoid deadlocks. Iterate over `concurrent.futures.as_completed(futures)` for accurate `tqdm` progress updates.
