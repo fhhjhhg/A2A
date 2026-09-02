@@ -206,7 +206,7 @@ Extension methods **MUST** be clearly documented and **MUST NOT** conflict with 
 For quick reference, the following table summarizes the method mappings across all transports:
 
 | JSON-RPC Method | gRPC Method | REST Endpoint | Description |
-|:----------------|:------------|:--------------|:------------|
+| :---------------- | :------------ | :-------------- | :------------ |
 | `message/send` | `SendMessage` | `POST /v1/message:send` | Send message to agent |
 | `message/stream` | `SendStreamingMessage` | `POST /v1/message:stream` | Send message with streaming |
 | `tasks/get` | `GetTask` | `GET /v1/tasks/{id}` | Get task status |
