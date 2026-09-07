@@ -1,0 +1,3 @@
+## 2024-05-24 - [Avoid PyTorch Quantile for Large Tensors]
+**Learning:** `torch.quantile` can throw a `RuntimeError` on extremely large `float32` tensors (like MRI volumes >16M elements). Furthermore, `np.percentile` returns a `numpy.float64` scalar by default; if you divide a float32 array/tensor by it, it promotes everything to float64, doubling memory usage and causing downstream PyTorch runtime errors (expected Float found Double).
+**Action:** When calculating quantiles on large datasets, fallback to `float(np.percentile(array, quantile * 100))`. The explicit `float()` cast ensures the divisor remains a standard Python float, preserving the original array precision (e.g. float32) during scalar division.
