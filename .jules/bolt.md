@@ -1,0 +1,3 @@
+## 2024-10-24 - [Avoid `torch.quantile` for large tensors]
+**Learning:** `torch.quantile` can throw a `RuntimeError` due to size limitations for `float32` tensors when calculating quantiles on large tensors (e.g., full MRI volumes > 16 million elements).
+**Action:** Use `np.percentile` on NumPy arrays instead to handle these larger data structures efficiently and avoid conversion overhead, noting that `np.percentile` expects a range of [0, 100] while `torch.quantile` uses [0.0, 1.0]. Also, always cast `np.percentile` results to standard Python `float` to avoid silently promoting downstream PyTorch tensors to `float64` and causing `RuntimeError` (`expected scalar type Float but found Double`).
