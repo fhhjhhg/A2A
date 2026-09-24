@@ -1,0 +1,3 @@
+## 2024-09-24 - [Hoisting operations out of chunking loops]
+**Learning:** In PyTorch chunking loops, element-wise operations like `unsqueeze` should be hoisted outside the loop to operate on the entire tensor once before `torch.split`, avoiding repeated overhead from allocating new tensor views or graph nodes per chunk. Also, conditionally wrapping iterables is more performant than using `tqdm(..., disable=True)`.
+**Action:** When chunking large tensors for model inference, always apply operations that change the shape or scale (like `unsqueeze` or `type`) to the whole tensor before splitting it into batches.
