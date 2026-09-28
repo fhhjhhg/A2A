@@ -1,0 +1,3 @@
+## 2024-05-31 - [Optimize PyTorch Chunking & tqdm Usage]
+**Learning:** When processing PyTorch chunks in a loop, element-wise operations like `unsqueeze` should be hoisted outside the loop to operate on the entire tensor once before `torch.split`. This avoids repeated overhead from allocating new tensor views or graph nodes per chunk. Additionally, using `tqdm(..., disable=True)` still introduces measurable overhead; conditional wrapping (e.g., `if pbar: chunks = tqdm(chunks)`) is faster.
+**Action:** Always evaluate loops over tensor chunks for operations that can be moved before the split, and wrap iterables with `tqdm` conditionally rather than using the `disable` flag in performance-critical code.
