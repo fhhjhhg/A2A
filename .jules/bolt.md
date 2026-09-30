@@ -1,0 +1,3 @@
+## 2025-02-23 - PyTorch Element-wise Operation Hoisting in Loops
+**Learning:** In PyTorch processing loops involving chunking/splitting (e.g. `torch.split(x)`), performing element-wise operations like `unsqueeze` inside the loop causes significant overhead by repeatedly allocating new tensor views or computation graph nodes per chunk.
+**Action:** When optimizing PyTorch chunking loops, hoist element-wise operations (like `unsqueeze`) outside the loop to operate on the entire tensor once before `torch.split`. Also, when conditionally toggling `tqdm`, wrap the iterable (`if pbar: chunks = tqdm(chunks)`) instead of passing `disable=True`, as `tqdm(..., disable=True)` still introduces measurable iteration overhead.
