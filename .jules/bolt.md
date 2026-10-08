@@ -1,0 +1,3 @@
+## 2024-10-08 - Optimize get_scaled_image Quantile Calculation
+**Learning:** Using `torch.quantile` on large numpy arrays requires casting them to PyTorch tensors first, which is an expensive operation (Device-to-Host transfer if on GPU, plus memory allocation). Moreover, `torch.quantile` can throw a `RuntimeError` for `float32` tensors on some hardware/scale combinations.
+**Action:** When a function accepts `Union[torch.Tensor, np.ndarray]`, evaluate the statistical functions natively. Use `float(np.percentile(..., 99))` for numpy arrays, returning it as a standard Python float to prevent float64 upcasting during subsequent division operations, and use `torch.quantile` only if it's already a tensor.
