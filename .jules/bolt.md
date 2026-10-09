@@ -1,0 +1,3 @@
+## 2026-10-09 - PyTorch Loop Overhead & tqdm Conditional Optimization
+**Learning:** Using `tqdm(..., disable=True)` in performance-critical loops introduces measurable overhead. Additionally, repeated element-wise operations like `unsqueeze` inside PyTorch chunking loops cause overhead from repeatedly allocating new tensor views or graph nodes. Finally, importing `from tqdm import tqdm` limits compatibility and can force an `ipywidgets` dependency.
+**Action:** Conditionally wrap iterables instead of using `disable=True` (e.g., `if pbar: chunks = tqdm(chunks)`). Hoist element-wise operations on tensors outside chunking loops to operate on the entire tensor once. Always use `from tqdm.auto import tqdm` in notebooks.
