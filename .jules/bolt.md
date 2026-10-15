@@ -1,0 +1,3 @@
+## 2024-05-14 - [Optimize NumPy Array Scaling]
+**Learning:** In utility functions handling both NumPy arrays and PyTorch tensors, indiscriminately casting NumPy arrays to PyTorch tensors (e.g., `torch.as_tensor(x)`) just to use a PyTorch-specific method (like `torch.quantile`) introduces unnecessary overhead from tensor instantiations.
+**Action:** When a function accepts either a tensor or an ndarray, conditionally branch the logic. Use native `np.percentile` and `np.clip` on NumPy arrays to avoid the PyTorch conversion overhead entirely. Remember to explicitly cast `np.percentile` results to Python `float` to prevent implicit array promotion to `float64` during subsequent operations.
