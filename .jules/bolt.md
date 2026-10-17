@@ -1,0 +1,3 @@
+## 2024-11-20 - Memory Overhead in Array Scaling
+**Learning:** Using `np.percentile` on a `float32` array returns a `numpy.float64` scalar by default. Dividing the array by this scalar silently promotes the entire array to `float64`, doubling memory consumption. Additionally, indiscriminately casting NumPy arrays to PyTorch tensors just to use `torch.quantile` introduces unnecessary tensor instantiation overhead.
+**Action:** Conditionally branch logic in utility functions to use native methods (`np.percentile` for NumPy, `torch.quantile` for PyTorch) and always explicitly cast the result of `np.percentile` to a Python `float` (e.g., `float(np.percentile(x, q))`) before division to prevent silent memory promotion.
