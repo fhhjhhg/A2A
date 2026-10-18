@@ -1,0 +1,3 @@
+## 2025-02-27 - Optimize np.percentile over torch.quantile for numpy arrays
+**Learning:** Forcing a NumPy array to a PyTorch tensor just to compute a scalar metric (like using `torch.quantile`) introduces severe performance overhead. Measuring on a 256x256x256 float32 volume showed `torch.quantile` took ~0.6s, while native `np.percentile` took ~0.26s.
+**Action:** When handling both NumPy arrays and PyTorch tensors, conditionally branch the logic to use native methods (e.g., `np.percentile` for arrays, `torch.quantile` for tensors) instead of unnecessarily casting NumPy arrays to PyTorch tensors. Ensure the result of `np.percentile` is cast to Python `float` to avoid memory doubling.
