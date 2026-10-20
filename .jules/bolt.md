@@ -1,0 +1,3 @@
+## 2024-05-15 - Unnecessary Tensor Instantiation for Quantiles
+**Learning:** Forcing NumPy arrays to PyTorch tensors via `torch.as_tensor` merely to compute quantiles introduces unnecessary tensor instantiation overhead, and `np.percentile` returns `numpy.float64` causing array promotion to float64 upon division.
+**Action:** Branch logic in utility functions to use native methods (`np.percentile` for arrays, `torch.quantile` for tensors). Explicitly cast `np.percentile` results to `float` to avoid memory-doubling regressions, but leave PyTorch tensor results uncasted to preserve the computation graph.
