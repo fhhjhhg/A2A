@@ -1,0 +1,3 @@
+## 2024-05-23 - PyTorch tensor casting overhead for scalar reductions on arrays
+**Learning:** In utility functions like `get_scaled_image`, casting a NumPy array to a PyTorch tensor just to compute a scalar metric (`torch.quantile`) forces a blocking Device-to-Host (D2H) synchronization if the underlying tensor operations interact with the GPU, creating a massive bottleneck when processing large MRI volumes (like SKM-TEA's >16M element arrays).
+**Action:** Always conditionally branch logic to use native methods (e.g., `np.percentile` for `ndarray` and `torch.quantile` for `Tensor`). Explicitly cast `np.percentile` to `float()` since it returns `np.float64`, which silently promotes `float32` arrays to `float64` during division and doubles memory usage.
