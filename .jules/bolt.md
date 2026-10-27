@@ -1,0 +1,3 @@
+## 2024-10-27 - [Optimize numpy scaling logic]
+**Learning:** Indiscriminately casting NumPy arrays to PyTorch tensors to use PyTorch-specific methods (like `torch.quantile`) introduces unnecessary tensor instantiation overhead. Furthermore, when computing scaling factors with `np.percentile` for `float32` arrays, it returns a `numpy.float64` scalar by default, which silently promotes the entire array to `float64` upon division, doubling memory consumption.
+**Action:** Use conditionally branched logic to use respective library's native methods. When using `np.percentile` for scaling, explicitly cast the result to a standard Python `float` to preserve the original array type during division.
