@@ -1,0 +1,3 @@
+## 2024-11-02 - Optimize utility function that handles both tensors and ndarrays
+**Learning:** Indiscriminately casting NumPy arrays to PyTorch tensors (e.g. `torch.as_tensor`) just to use a PyTorch-specific method (like `torch.quantile`) introduces unnecessary tensor instantiation overhead and implicit type promotions, doubling memory consumption.
+**Action:** When a utility function accepts both PyTorch Tensors and NumPy arrays, conditionally branch the logic to use native methods (e.g., `np.percentile` for arrays, `torch.quantile` for tensors) to avoid unnecessary tensor instantiation overhead.
