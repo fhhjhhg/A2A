@@ -1,0 +1,3 @@
+## 2024-03-24 - Avoid converting NumPy arrays to PyTorch Tensors for generic operations
+**Learning:** Forcing a NumPy array to a PyTorch tensor (e.g. `torch.as_tensor(x)`) just to use a generic PyTorch operation (like `torch.quantile`) instead of native NumPy operations (like `np.percentile`) introduces unnecessary instantiation and computation overhead, and forces D2H synchronization if the tensors are ultimately needed on CPU (e.g. back to `.numpy()`).
+**Action:** When handling union types of numpy arrays and PyTorch tensors, conditionally branch the logic to use native methods instead of indiscriminately forcing conversions to one framework just to use a specific method.
