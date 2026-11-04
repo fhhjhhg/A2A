@@ -1,0 +1,3 @@
+## 2024-11-04 - Native NumPy Percentile Optimization
+**Learning:** Using `torch.quantile` by casting NumPy arrays to PyTorch tensors (e.g. `torch.as_tensor(x)`) adds unnecessary tensor instantiation overhead and potential D2H sync issues. Furthermore, when using `np.percentile` as a replacement, it natively returns a `numpy.float64` scalar. If this scalar is used to divide a `float32` array, it silently promotes the entire array to `float64`, instantly doubling memory consumption.
+**Action:** In dual-support utilities (NumPy + PyTorch), branch logic to use native methods respectively (`np.percentile` vs `torch.quantile`). Always explicitly cast `np.percentile` results to a Python `float` (e.g., `float(np.percentile(...))`) before using them in array operations.
