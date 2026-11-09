@@ -1,0 +1,3 @@
+## 2024-05-15 - [Avoid Tensor Conversion Overhead for Scalers]
+**Learning:** Indiscriminately casting NumPy arrays to PyTorch tensors just to use `torch.quantile` introduces unnecessary tensor instantiation overhead. Furthermore, `np.percentile` returns a `numpy.float64` by default, which can silently promote the entire array to `float64` upon division, doubling memory consumption.
+**Action:** Conditionally branch logic to use native library methods (e.g., `np.percentile` for arrays, `torch.quantile` for tensors) and explicitly cast `np.percentile` scalar results to `float` to avoid implicit type promotion. Never cast PyTorch tensor results to Python floats if they might be on a GPU.
